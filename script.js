@@ -1,8 +1,13 @@
 const squares = document.querySelectorAll('.square');
 const resetButton = document.getElementById('resetButton');
 const statusDisplay = document.getElementById('status');
+const playerXWinsDisplay = document.getElementById('playerXWins');
+const playerOWinsDisplay = document.getElementById('playerOWins');
+
 let currentPlayer = 'X';
 let gameBoard = ['', '', '', '', '', '', '', '', ''];  // 3x3 grid for the game
+let playerXWins = 0;
+let playerOWins = 0;
 
 const winningCombinations = [
     [0, 1, 2], // Top row
@@ -22,6 +27,12 @@ function updateBoard() {
     });
 }
 
+// Function to update the win count display
+function updateWinCount() {
+    playerXWinsDisplay.textContent = `Player X Wins: ${playerXWins}`;
+    playerOWinsDisplay.textContent = `Player O Wins: ${playerOWins}`;
+}
+
 // Function to handle player's click
 function handleSquareClick(event) {
     const index = event.target.getAttribute('data-index');
@@ -30,6 +41,12 @@ function handleSquareClick(event) {
     updateBoard();
     if (checkWinner()) {
         statusDisplay.textContent = `${currentPlayer} wins!`;
+        if (currentPlayer === 'X') {
+            playerXWins++;
+        } else {
+            playerOWins++;
+        }
+        updateWinCount();
         return;
     }
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';  // Switch player
@@ -65,3 +82,4 @@ resetButton.addEventListener('click', resetGame);
 // Initialize the game display
 updateBoard();
 statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+updateWinCount();
