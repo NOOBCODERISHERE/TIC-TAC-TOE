@@ -1,9 +1,8 @@
-/* General styles for the page */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif; /* Elegant, modern sans-serif font */
 }
 
 body {
@@ -11,51 +10,204 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background: linear-gradient(to bottom, #f4f7fa, #dde1e7); /* Soft gradient background */
+    font-size: 16px;
+    margin: 0;
 }
 
 .game-container {
-    text-align: center;
+    display: flex;
+    justify-content: space-between; /* Creates space between the board and controls */
+    align-items: center;
+    width: 80%; /* Set a width for the container to keep it centered */
+    max-width: 1200px; /* Max width for responsiveness */
+    background: #ffffff; /* Pure white background */
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: transform 0.3s ease-in-out;
 }
 
-h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
+.game-container:hover {
+    transform: translateY(-5px); /* Slightly raise the container on hover */
 }
 
-/* Tic-Tac-Toe board styling */
+.game-board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(3, 100px);
-    grid-gap: 5px;
-    margin-bottom: 20px;
+    grid-gap: 15px;
 }
 
 .square {
     width: 100px;
     height: 100px;
-    background-color: #fff;
-    border: 2px solid #000;
+    background-color: #f8f8f8;
+    border: 2px solid #d0d0d0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 36px;
+    font-size: 40px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .square:hover {
-    background-color: #f1f1f1;
+    background-color: #e4e4e4;
+    transform: scale(1.05);
 }
 
-/* Status text and reset button styling */
-#status {
-    font-size: 20px;
+.square:active {
+    transform: scale(0.98);
+}
+
+.game-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the left */
+    margin-left: 30px; /* Space between board and controls */
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #3a3a3a;
+    font-weight: 700;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 20px;
+    width: 100%;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 15px 30px;
     font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 10px 0;
+    border: none;
+    background-color: #4e91e7;
+    color: #fff;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 250px;
+}
+
+button:hover {
+    background-color: #3a74b2;
+}
+
+button:active {
+    background-color: #335c8b;
+}
+
+.restart-button {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    background-color: #f77b6e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 250px;
+}
+
+.restart-button:hover {
+    background-color: #e46a5e;
+}
+
+.restart-button:active {
+    background-color: #d7584e;
+}
+
+#status {
+    font-size: 18px;
+    margin-top: 20px;
+    color: #333;
+}
+
+#winCounts {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+#timer {
+    font-size: 18px;
+    margin-top: 20px;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column; /* Switch to vertical layout on small screens */
+        width: 95%;
+    }
+
+    .game-board-container {
+        margin-bottom: 30px; /* Space between board and controls */
+    }
+
+    .board {
+        grid-template-columns: repeat(3, 90px);
+        grid-gap: 10px;
+    }
+
+    button {
+        width: 200px;
+    }
+
+    .restart-button {
+        width: 200px;
+    }
+}
+#gameOverScreen {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+#gameOverMessage {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+#gameOverTime {
+    font-size: 18px;
+    color: #555;
+}
+
+.restart-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
 }
+
+.restart-button:hover {
+    background-color: #45a049;
+}
+

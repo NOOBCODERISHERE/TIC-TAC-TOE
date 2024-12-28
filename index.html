@@ -8,28 +8,44 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Tic-Tac-Toe</h1>
-        <div class="board">
-            <!-- 9 squares for the grid -->
-            <div class="square" data-index="0"></div>
-            <div class="square" data-index="1"></div>
-            <div class="square" data-index="2"></div>
-            <div class="square" data-index="3"></div>
-            <div class="square" data-index="4"></div>
-            <div class="square" data-index="5"></div>
-            <div class="square" data-index="6"></div>
-            <div class="square" data-index="7"></div>
-            <div class="square" data-index="8"></div>
+        <!-- Left side for the board -->
+        <div class="game-board-container">
+            <div class="board">
+                <div class="square" data-index="0"></div>
+                <div class="square" data-index="1"></div>
+                <div class="square" data-index="2"></div>
+                <div class="square" data-index="3"></div>
+                <div class="square" data-index="4"></div>
+                <div class="square" data-index="5"></div>
+                <div class="square" data-index="6"></div>
+                <div class="square" data-index="7"></div>
+                <div class="square" data-index="8"></div>
+            </div>
         </div>
-        <button id="resetButton">Restart Game</button>
-        <div id="status"></div>
 
-        <div id="winCounts">
-            <p id="playerXWins">Player X Wins: 0</p>
-            <p id="playerOWins">Player O Wins: 0</p>
+        <!-- Right side for controls, status, and timer -->
+        <div class="game-info-container">
+            <h1>Tic-Tac-Toe</h1>
+            <div class="button-container">
+                <button id="playerVsPlayerButton">Play Player vs Player</button>
+                <button id="playerVsComputerButton">Play Player vs Computer</button>
+            </div>
+            <button id="resetButton" class="restart-button">Restart Game</button>
+            <div id="status"></div>
+            <div id="winCounts">
+                <p id="playerXWins">Player X Wins: 0</p>
+                <p id="playerOWins">Player O Wins: 0</p>
+            </div>
+            <div id="timer">Time: 00:00</div>
+            <!-- Game Over Screen (Hidden by default) -->
+<div id="gameOverScreen" style="display: none; text-align: center; padding: 20px; background: #f0f0f0; border-radius: 10px; margin-top: 20px;">
+    <h2 id="gameOverMessage" style="font-size: 24px; font-weight: bold;"></h2>
+    <p id="gameOverTime" style="font-size: 18px; margin-top: 10px;"></p>
+    <button id="resetButton" class="restart-button">Restart Game</button>
+</div>
+
         </div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
