@@ -60,7 +60,29 @@
         <label for="square-color">Choose Square Color</label>
         <input type="color" id="square-color" class="color-picker" value="#ffffff" />
     </div>
+    <!-- Customization Panel (Initially hidden) -->
+    <div id="customizePanel" class="customize-panel">
+        <div>
+            <label for="panel-background">Panel Background</label>
+            <input type="color" id="panel-background" value="#ffffff" />
+        </div>
+        <div>
+            <label for="panel-text">Panel Text Color</label>
+            <input type="color" id="panel-text" value="#333333" />
+        </div>
+        <div>
+            <label for="panel-border">Border Radius</label>
+            <input type="range" id="panel-border" min="0" max="50" value="15" />
+        </div>
+        <div>
+            <label for="panel-font-size">Font Size</label>
+            <input type="range" id="panel-font-size" min="12" max="36" value="16" />
+        </div>
+    </div>
     
+    <!-- The Customize Game Panel Button (Fixed in the corner) -->
+    <button id="customizePanelButton">Customize Game Panel</button>
+
     <script src="script.js"></script>
 </body>
 </html>

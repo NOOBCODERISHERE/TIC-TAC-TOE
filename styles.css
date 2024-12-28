@@ -10,7 +10,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom, #f4f7fa, #dde1e7); /* Soft gradient background */
     font-size: 16px;
     margin: 0;
 }
@@ -283,4 +282,110 @@ button {
 .color-picker {
     margin-top: 10px;
     cursor: pointer;
+}
+/* Customization Panel */
+.customize-panel {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+.customize-panel input {
+    margin-top: 10px;
+}
+
+/* The Customize Game Panel Button (Fixed in the corner) */
+#customizePanelButton {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 30px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1000; /* Ensures it's on top of other content */
+}
+
+#customizePanelButton:hover {
+    background-color: #45a049;
+}
+/* Customization Panel */
+.customize-panel {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+.customize-panel input {
+    margin-top: 10px;
+}
+
+/* The Customize Game Panel Button (Fixed in the corner) */
+#customizePanelButton {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 30px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White font color */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1000; /* Ensures it's on top of other content */
+}
+
+#customizePanelButton:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+}
+
+#customizePanelButton:active {
+    background-color: #398a3d; /* Darker green when the button is clicked */
+}
+/* Label for Panel Text Color */
+.customize-panel label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    display: block; /* Ensure label appears above input */
+}
+
+/* The Color Picker Input */
+.customize-panel input[type="color"] {
+    width: 40px; /* Adjust the width of the color input */
+    height: 40px; /* Adjust the height of the color input */
+    border: none; /* Remove border */
+    border-radius: 50%; /* Make the color input round */
+    cursor: pointer; /* Show pointer cursor when hovered */
+    background-color: transparent; /* Ensure no background */
+    transition: border 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect for Color Picker */
+.customize-panel input[type="color"]:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Focus Effect for Color Picker */
+.customize-panel input[type="color"]:focus {
+    outline: none; /* Remove the default outline */
+    border: 2px solid #4CAF50; /* Green border when focused */
 }

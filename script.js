@@ -182,18 +182,24 @@ function minimax(availableMoves) {
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-// Select the color pickers and game-related elements
+// Select the color pickers
 const backgroundColorPicker = document.getElementById('background-color');
 const squareColorPicker = document.getElementById('square-color');
 
 // Event listener to change the background color of the entire website (body)
 backgroundColorPicker.addEventListener('input', (event) => {
-    // Change the body background color
+    // Log the selected color to debug
+    console.log("Background color picked:", event.target.value);
+
+    // Change the body background color immediately
     document.body.style.backgroundColor = event.target.value;
 });
 
 // Event listener to change the square color of the game squares
 squareColorPicker.addEventListener('input', (event) => {
+    // Log the selected color for squares
+    console.log("Square color picked:", event.target.value);
+    
     // Select all the game squares
     const gameSquares = document.querySelectorAll('.square');
 
@@ -201,4 +207,41 @@ squareColorPicker.addEventListener('input', (event) => {
     gameSquares.forEach((square) => {
         square.style.backgroundColor = event.target.value;
     });
+});
+// Select the elements for customization
+const customizeButton = document.getElementById('customizePanelButton');
+const customizePanel = document.getElementById('customizePanel');
+
+// Color pickers and other customization controls
+const panelBackgroundPicker = document.getElementById('panel-background');
+const panelTextPicker = document.getElementById('panel-text');
+const panelBorderRadius = document.getElementById('panel-border');
+const panelFontSize = document.getElementById('panel-font-size');
+
+// Game panel container to apply custom styles
+const gameContainer = document.querySelector('.game-container');
+
+// Toggle the visibility of the customization panel when the button is clicked
+customizeButton.addEventListener('click', () => {
+    customizePanel.style.display = customizePanel.style.display === 'none' ? 'block' : 'none';
+});
+
+// Apply background color to the game panel when the user selects a color
+panelBackgroundPicker.addEventListener('input', (event) => {
+    gameContainer.style.backgroundColor = event.target.value;
+});
+
+// Apply text color to the game panel
+panelTextPicker.addEventListener('input', (event) => {
+    gameContainer.style.color = event.target.value;
+});
+
+// Apply border radius to the game panel
+panelBorderRadius.addEventListener('input', (event) => {
+    gameContainer.style.borderRadius = `${event.target.value}px`;
+});
+
+// Apply font size to the game panel text
+panelFontSize.addEventListener('input', (event) => {
+    gameContainer.style.fontSize = `${event.target.value}px`;
 });
