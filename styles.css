@@ -389,3 +389,71 @@ button {
     outline: none; /* Remove the default outline */
     border: 2px solid #4CAF50; /* Green border when focused */
 }
+/* Customization Panel */
+.customize-panel {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    width: 300px; /* Adjust the width for consistency */
+}
+
+/* Color Picker Container */
+.color-picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between the inputs */
+}
+
+/* Style the labels for a clean appearance */
+.color-picker-container label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Style the color input fields */
+.color-picker-container input[type="color"] {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+/* Hover effect on the color picker */
+.color-picker-container input[type="color"]:hover {
+    border-color: #4CAF50;
+}
+
+/* Add focus effect for better user experience */
+.color-picker-container input[type="color"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+/* Style for the Select Game Mode message */
+.select-mode-message {
+    font-size: 20px;
+    color: #ff0000; /* Red color for the message */
+    text-align: center;
+    margin-bottom: 20px; /* Space between the message and the game board */
+    display: block;
+    font-weight: bold;
+  }
+  
+  /* Game board container styles */
+  .game-board-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Optional, for spacing */
+  }
+  
+  

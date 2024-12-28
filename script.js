@@ -19,6 +19,12 @@ let playerOWins = 0;
 const playerXWinsDisplay = document.getElementById('playerXWins');
 const playerOWinsDisplay = document.getElementById('playerOWins');
 
+// Lock flag for the game board
+let locked = true; // Initially, the board is locked
+
+// Message for selecting a mode
+const selectModeMessage = document.getElementById('selectModeMessage');
+
 // Handle difficulty selection
 const difficultyButtons = document.querySelectorAll('.difficulty-container button');
 difficultyButtons.forEach(button =>
@@ -47,8 +53,11 @@ function setDifficulty(level) {
 // Set game mode
 function setGameMode(isComputerMode) {
   isPlayerVsComputer = isComputerMode;
+  locked = false; // Unlock the board once a mode is selected
   resetGame();
   statusDisplay.textContent = isComputerMode ? "Starting game..." : "Player's Turn (vs Player)";
+  enableBoard(); // Enable the game board interaction
+  selectModeMessage.style.display = 'none'; // Hide the "SELECT THE GAME MODE!!" message
 }
 
 // Update win count
@@ -59,29 +68,27 @@ function updateWinCount(player) {
 }
 
 // Reset the game
-// Reset the game
 function resetGame() {
-    board.fill('');
-    gameActive = true;
-    currentPlayer = isPlayerVsComputer ? (Math.random() < 0.5 ? 'X' : 'O') : 'X';
-    cells.forEach(cell => (cell.textContent = ''));
-    document.getElementById('gameOverScreen').style.display = 'none';
-    
-    // Show the game board again
-    document.querySelector('.game-board-container').style.display = 'block';
+  board.fill('');
+  gameActive = true;
+  currentPlayer = isPlayerVsComputer ? (Math.random() < 0.5 ? 'X' : 'O') : 'X';
+  cells.forEach(cell => (cell.textContent = ''));
+  document.getElementById('gameOverScreen').style.display = 'none';
   
-    statusDisplay.textContent = `${currentPlayer}'s Turn`;
+  // Show the game board again
+  document.querySelector('.game-board-container').style.display = 'block';
   
-    clearInterval(timerInterval);
-    timerSeconds = timerMinutes = 0;
-    timerDisplay.textContent = 'Time: 00:00';
-    startTimer();
+  statusDisplay.textContent = `${currentPlayer}'s Turn`;
   
-    if (isPlayerVsComputer && currentPlayer === 'O') {
-      setTimeout(computerMove, 500);
-    }
+  clearInterval(timerInterval);
+  timerSeconds = timerMinutes = 0;
+  timerDisplay.textContent = 'Time: 00:00';
+  startTimer();
+  
+  if (isPlayerVsComputer && currentPlayer === 'O') {
+    setTimeout(computerMove, 500); // Let the computer start after a slight delay
   }
-  
+}
 
 // Start the timer
 function startTimer() {
@@ -100,13 +107,27 @@ function formatTime(time) {
   return time < 10 ? `0${time}` : time;
 }
 
+// Enable the game board for interaction
+function enableBoard() {
+  cells.forEach(cell => {
+    cell.style.pointerEvents = 'auto'; // Enable pointer events for all cells
+  });
+}
+
+// Disable the game board
+function disableBoard() {
+  cells.forEach(cell => {
+    cell.style.pointerEvents = 'none'; // Disable pointer events for all cells
+  });
+}
+
 // Handle a player's move
 function handleCellClick(index) {
-  if (board[index] || !gameActive) return;
+  if (board[index] || !gameActive || locked) return; // Don't allow clicks if the board is locked or game is over
 
   board[index] = currentPlayer;
   cells[index].textContent = currentPlayer;
-  
+
   if (checkWinner()) {
     updateWinCount(currentPlayer);
     displayGameOver(`${currentPlayer} wins!`);
@@ -121,7 +142,7 @@ function handleCellClick(index) {
   switchPlayer();
 
   if (isPlayerVsComputer && currentPlayer === 'O') {
-    setTimeout(computerMove, 500);
+    setTimeout(computerMove, 500); // Delay the computer's move
   } else {
     statusDisplay.textContent = `${currentPlayer}'s Turn`;
   }
@@ -156,7 +177,7 @@ function displayGameOver(message) {
   gameActive = false;
   clearInterval(timerInterval);
   document.querySelector('.game-board-container').style.display = 'none';
-  
+
   const gameOverScreen = document.getElementById('gameOverScreen');
   gameOverScreen.style.display = 'block';
   document.getElementById('gameOverMessage').textContent = message;
@@ -182,66 +203,49 @@ function minimax(availableMoves) {
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
 // Select the color pickers
 const backgroundColorPicker = document.getElementById('background-color');
 const squareColorPicker = document.getElementById('square-color');
 
 // Event listener to change the background color of the entire website (body)
 backgroundColorPicker.addEventListener('input', (event) => {
-    // Log the selected color to debug
-    console.log("Background color picked:", event.target.value);
+  // Log the selected color to debug
+  console.log("Background color picked:", event.target.value);
 
-    // Change the body background color immediately
-    document.body.style.backgroundColor = event.target.value;
+  // Change the body background color immediately
+  document.body.style.backgroundColor = event.target.value;
 });
 
 // Event listener to change the square color of the game squares
 squareColorPicker.addEventListener('input', (event) => {
-    // Log the selected color for squares
-    console.log("Square color picked:", event.target.value);
-    
-    // Select all the game squares
-    const gameSquares = document.querySelectorAll('.square');
+  // Log the selected color for squares
+  console.log("Square color picked:", event.target.value);
 
-    // Change the background color of each square
-    gameSquares.forEach((square) => {
-        square.style.backgroundColor = event.target.value;
-    });
+  // Select all the game squares
+  const gameSquares = document.querySelectorAll('.square');
+
+  // Change the background color of each square
+  gameSquares.forEach((square) => {
+    square.style.backgroundColor = event.target.value;
+  });
 });
-// Select the elements for customization
+
+// Get the button and customize panel
 const customizeButton = document.getElementById('customizePanelButton');
-const customizePanel = document.getElementById('customizePanel');
+const customizePanel = document.querySelector('.customize-panel');
 
-// Color pickers and other customization controls
-const panelBackgroundPicker = document.getElementById('panel-background');
-const panelTextPicker = document.getElementById('panel-text');
-const panelBorderRadius = document.getElementById('panel-border');
-const panelFontSize = document.getElementById('panel-font-size');
+// Toggle the panel visibility when the button is clicked
+customizeButton.addEventListener('click', function() {
+  const buttonRect = customizeButton.getBoundingClientRect(); // Get the position of the button
 
-// Game panel container to apply custom styles
-const gameContainer = document.querySelector('.game-container');
-
-// Toggle the visibility of the customization panel when the button is clicked
-customizeButton.addEventListener('click', () => {
-    customizePanel.style.display = customizePanel.style.display === 'none' ? 'block' : 'none';
-});
-
-// Apply background color to the game panel when the user selects a color
-panelBackgroundPicker.addEventListener('input', (event) => {
-    gameContainer.style.backgroundColor = event.target.value;
-});
-
-// Apply text color to the game panel
-panelTextPicker.addEventListener('input', (event) => {
-    gameContainer.style.color = event.target.value;
-});
-
-// Apply border radius to the game panel
-panelBorderRadius.addEventListener('input', (event) => {
-    gameContainer.style.borderRadius = `${event.target.value}px`;
-});
-
-// Apply font size to the game panel text
-panelFontSize.addEventListener('input', (event) => {
-    gameContainer.style.fontSize = `${event.target.value}px`;
+  // If the panel is not visible, display it
+  if (customizePanel.style.display === 'none' || customizePanel.style.display === '') {
+    // Set the position of the customization panel below the button
+    customizePanel.style.top = `${buttonRect.bottom + window.scrollY + 10}px`; // 10px margin below the button
+    customizePanel.style.left = `${buttonRect.left + window.scrollX}px`; // Align with the left of the button
+    customizePanel.style.display = 'block';
+  } else {
+    customizePanel.style.display = 'none';
+  }
 });

@@ -53,13 +53,6 @@
         <button id="restartButton" class="restart-button">Restart Game</button> <!-- This is the Restart button -->
     </div>
 
-    <div class="color-picker-container">
-        <label for="background-color">Choose Background Color</label>
-        <input type="color" id="background-color" class="color-picker" value="#ffffff" />
-    
-        <label for="square-color">Choose Square Color</label>
-        <input type="color" id="square-color" class="color-picker" value="#ffffff" />
-    </div>
     <!-- Customization Panel (Initially hidden) -->
     <div id="customizePanel" class="customize-panel">
         <div>
@@ -77,12 +70,26 @@
         <div>
             <label for="panel-font-size">Font Size</label>
             <input type="range" id="panel-font-size" min="12" max="36" value="16" />
+            <div class="color-picker-container">
+                <label for="background-color">Choose Background Color</label>
+                <input type="color" id="background-color" class="color-picker" value="#ffffff" />
+        
+                <label for="square-color">Choose Square Color</label>
+                <input type="color" id="square-color" class="color-picker" value="#ffffff" />
+            </div>
         </div>
     </div>
     
     <!-- The Customize Game Panel Button (Fixed in the corner) -->
     <button id="customizePanelButton">Customize Game Panel</button>
-
+    <div id="selectModeMessage" class="select-mode-message">
+        SELECT THE GAME MODE!!
+      </div>
+      
+      <div class="game-board-container">
+        <!-- Game board content here -->
+      </div>
+      
     <script src="script.js"></script>
 </body>
 </html>
