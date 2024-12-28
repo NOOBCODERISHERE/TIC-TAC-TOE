@@ -1,17 +1,16 @@
 // Game board state
 const cells = Array.from(document.querySelectorAll('.square'));
-let board = ['', '', '', '', '', '', '', '', '']; // Represents the 3x3 grid
+let board = Array(9).fill(''); // Represent the 3x3 grid
 let currentPlayer = 'X'; // Player 'X' starts the game
-let gameActive = true; // Track if the game is still active
-let isPlayerVsComputer = false; // Track if it's player vs computer mode
+let gameActive = true; // Track if the game is active
+let isPlayerVsComputer = false; // Track Player vs Computer mode
+let aiDifficulty = 'easy'; // Initial AI difficulty
 
 // Timer variables
 let timerInterval;
 let timerSeconds = 0;
 let timerMinutes = 0;
-let timerDisplay = document.getElementById('timer');
-
-// Display the game status
+const timerDisplay = document.getElementById('timer');
 const statusDisplay = document.getElementById('status');
 
 // Game win counts
@@ -20,169 +19,186 @@ let playerOWins = 0;
 const playerXWinsDisplay = document.getElementById('playerXWins');
 const playerOWinsDisplay = document.getElementById('playerOWins');
 
-// Play Player vs Player mode
-document.getElementById('playerVsPlayerButton').addEventListener('click', () => {
-    isPlayerVsComputer = false; // Set mode to Player vs Player
-    resetGame();  // Reset the game
-    statusDisplay.textContent = "Player's Turn (vs Player)";
-});
+// Handle difficulty selection
+const difficultyButtons = document.querySelectorAll('.difficulty-container button');
+difficultyButtons.forEach(button =>
+  button.addEventListener('click', () => setDifficulty(button.id))
+);
 
-// Play Player vs Computer mode
-document.getElementById('playerVsComputerButton').addEventListener('click', () => {
-    isPlayerVsComputer = true; // Set mode to Player vs Computer
-    resetGame();  // Reset the game
-    statusDisplay.textContent = "Player's Turn (vs Computer)";
-});
+// Handle mode selection
+document.getElementById('playerVsPlayerButton').addEventListener('click', () => setGameMode(false));
+document.getElementById('playerVsComputerButton').addEventListener('click', () => setGameMode(true));
 
-// Handles a player's move
-function handleCellClick(index) {
-    if (board[index] === '' && gameActive) {
-        board[index] = currentPlayer; // Mark the square with the player's symbol
-        cells[index].textContent = currentPlayer;
+// Handle square click
+cells.forEach((cell, index) =>
+  cell.addEventListener('click', () => handleCellClick(index))
+);
 
-        if (checkWinner()) {
-            statusDisplay.textContent = `${currentPlayer} wins!`;
-            updateWinCount(currentPlayer);
-            gameActive = false; // End the game when there's a winner
-            clearInterval(timerInterval); // Stop the timer when the game ends
-            displayGameOverScreen(`${currentPlayer} wins!`);
-            return;
-        }
+// Restart button functionality
+document.getElementById('restartButton').addEventListener('click', resetGame);
 
-        // Switch players
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-
-        // Check if it's the computer's turn (Player "O")
-        if (isPlayerVsComputer && currentPlayer === 'O' && gameActive) {
-            setTimeout(computerMove, 500); // Delay for computer's turn
-        } else {
-            statusDisplay.textContent = `${currentPlayer}'s Turn`;
-            startTimer(); // Start timer when player's turn begins
-        }
-    }
+// Set AI difficulty
+function setDifficulty(level) {
+  aiDifficulty = level;
+  resetGame();
+  statusDisplay.textContent = `AI Difficulty: ${capitalize(level)}`;
 }
 
-// Check if there is a winner or draw
-function checkWinner() {
-    const winPatterns = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-        [0, 4, 8], [2, 4, 6] // Diagonals
-    ];
-
-    // Check all win patterns
-    for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            return true; // Winner found
-        }
-    }
-
-    // Check if the board is full and it's a draw
-    if (!board.includes('')) {
-        statusDisplay.textContent = "It's a draw!";
-        gameActive = false;
-        clearInterval(timerInterval); // Stop the timer when the game ends
-        displayGameOverScreen("It's a draw!");
-        return true;
-    }
-
-    return false;
+// Set game mode
+function setGameMode(isComputerMode) {
+  isPlayerVsComputer = isComputerMode;
+  resetGame();
+  statusDisplay.textContent = isComputerMode ? "Starting game..." : "Player's Turn (vs Player)";
 }
 
-// Make the computer's move (random move)
-function computerMove() {
-    const availableCells = board.map((cell, index) => cell === '' ? index : null).filter(val => val !== null); // Get empty cells
-    const randomIndex = availableCells[Math.floor(Math.random() * availableCells.length)]; // Select a random empty cell
-
-    board[randomIndex] = 'O'; // Place 'O' in the random cell
-    cells[randomIndex].textContent = 'O'; // Update the UI with 'O'
-
-    if (checkWinner()) {
-        statusDisplay.textContent = 'Computer (O) wins!';
-        updateWinCount('O');
-        gameActive = false; // End the game
-        clearInterval(timerInterval); // Stop the timer
-        displayGameOverScreen('Computer (O) wins!');
-    } else {
-        currentPlayer = 'X'; // Switch back to player
-        statusDisplay.textContent = "Player's Turn";
-        startTimer(); // Start timer again for the player's turn
-    }
+// Update win count
+function updateWinCount(player) {
+  player === 'X' ? playerXWins++ : playerOWins++;
+  playerXWinsDisplay.textContent = `Player X Wins: ${playerXWins}`;
+  playerOWinsDisplay.textContent = `Player O Wins: ${playerOWins}`;
 }
 
-// Update the win count for the player who won
-function updateWinCount(winner) {
-    if (winner === 'X') {
-        playerXWins++;
-        playerXWinsDisplay.textContent = `Player X Wins: ${playerXWins}`;
-    } else if (winner === 'O') {
-        playerOWins++;
-        playerOWinsDisplay.textContent = `Player O Wins: ${playerOWins}`;
-    }
-}
-
-// Reset the game to its initial state
+// Reset the game
+// Reset the game
 function resetGame() {
-    board = ['', '', '', '', '', '', '', '', '']; // Clear the board
-    currentPlayer = 'X'; // Player 'X' starts
-    gameActive = true; // Game is active
-    timerMinutes = 0;
-    timerSeconds = 0;
-    clearInterval(timerInterval); // Stop any running timer
-
-    // Clear all grid cells
-    cells.forEach(cell => cell.textContent = '');
-
-    // Reset win counts when switching modes
-    playerXWins = 0;
-    playerOWins = 0;
-    playerXWinsDisplay.textContent = `Player X Wins: ${playerXWins}`;
-    playerOWinsDisplay.textContent = `Player O Wins: ${playerOWins}`;
-
-    // Reset timer display
-    timerDisplay.textContent = 'Time: 00:00';
-
-    // Reset Game Over Screen
+    board.fill('');
+    gameActive = true;
+    currentPlayer = isPlayerVsComputer ? (Math.random() < 0.5 ? 'X' : 'O') : 'X';
+    cells.forEach(cell => (cell.textContent = ''));
     document.getElementById('gameOverScreen').style.display = 'none';
-}
-
-// Add event listeners to each cell
-cells.forEach((cell, index) => {
-    cell.addEventListener('click', () => handleCellClick(index)); // Handle user clicks
-});
-
-// Reset button click event listener
-document.getElementById('resetButton').addEventListener('click', resetGame);
-
-// Timer functionality
-function startTimer() {
-    // Clear any existing interval if the timer was already running
+    
+    // Show the game board again
+    document.querySelector('.game-board-container').style.display = 'block';
+  
+    statusDisplay.textContent = `${currentPlayer}'s Turn`;
+  
     clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        timerSeconds++;
-        if (timerSeconds === 60) {
-            timerSeconds = 0;
-            timerMinutes++;
-        }
+    timerSeconds = timerMinutes = 0;
+    timerDisplay.textContent = 'Time: 00:00';
+    startTimer();
+  
+    if (isPlayerVsComputer && currentPlayer === 'O') {
+      setTimeout(computerMove, 500);
+    }
+  }
+  
 
-        // Update the timer display
-        timerDisplay.textContent = `Time: ${formatTime(timerMinutes)}:${formatTime(timerSeconds)}`;
-    }, 1000); // Update every second
+// Start the timer
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    if (timerSeconds === 60) {
+      timerSeconds = 0;
+      timerMinutes++;
+    }
+    timerDisplay.textContent = `Time: ${formatTime(timerMinutes)}:${formatTime(timerSeconds)}`;
+  }, 1000);
 }
 
-// Format time to always show two digits
+// Format time for display
 function formatTime(time) {
-    return time < 10 ? `0${time}` : time;
+  return time < 10 ? `0${time}` : time;
+}
+
+// Handle a player's move
+function handleCellClick(index) {
+  if (board[index] || !gameActive) return;
+
+  board[index] = currentPlayer;
+  cells[index].textContent = currentPlayer;
+  
+  if (checkWinner()) {
+    updateWinCount(currentPlayer);
+    displayGameOver(`${currentPlayer} wins!`);
+    return;
+  }
+
+  if (checkDraw()) {
+    displayGameOver("It's a draw!");
+    return;
+  }
+
+  switchPlayer();
+
+  if (isPlayerVsComputer && currentPlayer === 'O') {
+    setTimeout(computerMove, 500);
+  } else {
+    statusDisplay.textContent = `${currentPlayer}'s Turn`;
+  }
+}
+
+// Check if the game is a draw
+function checkDraw() {
+  return board.every(cell => cell !== '');
+}
+
+// Switch current player
+function switchPlayer() {
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+}
+
+// Check for a winner
+function checkWinner() {
+  const winPatterns = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+
+  return winPatterns.some(pattern => {
+    const [a, b, c] = pattern;
+    return board[a] && board[a] === board[b] && board[a] === board[c];
+  });
 }
 
 // Display Game Over Screen
-function displayGameOverScreen(message) {
-    const gameOverScreen = document.getElementById('gameOverScreen');
-    const gameOverMessage = document.getElementById('gameOverMessage');
-    const gameOverTime = document.getElementById('gameOverTime');
-
-    gameOverMessage.textContent = message;
-    gameOverTime.textContent = `Time taken: ${formatTime(timerMinutes)}:${formatTime(timerSeconds)}`;
-    gameOverScreen.style.display = 'block'; // Show the game over screen
+function displayGameOver(message) {
+  gameActive = false;
+  clearInterval(timerInterval);
+  document.querySelector('.game-board-container').style.display = 'none';
+  
+  const gameOverScreen = document.getElementById('gameOverScreen');
+  gameOverScreen.style.display = 'block';
+  document.getElementById('gameOverMessage').textContent = message;
+  document.getElementById('gameOverTime').textContent = `Time Taken: ${formatTime(timerMinutes)}:${formatTime(timerSeconds)}`;
 }
+
+// Computer's move (AI logic)
+function computerMove() {
+  const availableMoves = board.map((value, index) => value === '' ? index : -1).filter(index => index !== -1);
+  const move = aiDifficulty === 'easy' 
+    ? availableMoves[Math.floor(Math.random() * availableMoves.length)] 
+    : minimax(availableMoves);
+  handleCellClick(move);
+}
+
+// Simple AI: Minimax (can be optimized further for harder difficulties)
+function minimax(availableMoves) {
+  // Implement minimax logic here or return random for now
+  return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+}
+
+// Capitalize the first letter of a string
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+// Select the color pickers and game-related elements
+const backgroundColorPicker = document.getElementById('background-color');
+const squareColorPicker = document.getElementById('square-color');
+
+// Event listener to change the background color of the entire website (body)
+backgroundColorPicker.addEventListener('input', (event) => {
+    // Change the body background color
+    document.body.style.backgroundColor = event.target.value;
+});
+
+// Event listener to change the square color of the game squares
+squareColorPicker.addEventListener('input', (event) => {
+    // Select all the game squares
+    const gameSquares = document.querySelectorAll('.square');
+
+    // Change the background color of each square
+    gameSquares.forEach((square) => {
+        square.style.backgroundColor = event.target.value;
+    });
+});

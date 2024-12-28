@@ -47,8 +47,8 @@ body {
 .square {
     width: 100px;
     height: 100px;
-    background-color: #f8f8f8;
-    border: 2px solid #d0d0d0;
+    background-color: #f8f8f8; /* Light gray squares */
+    border: 2px solid #d0d0d0; /* Light border around squares */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,11 +57,11 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for the squares */
 }
 
 .square:hover {
-    background-color: #e4e4e4;
+    background-color: #e4e4e4; /* Slightly darker gray on hover */
     transform: scale(1.05);
 }
 
@@ -98,7 +98,7 @@ button {
     cursor: pointer;
     margin: 10px 0;
     border: none;
-    background-color: #4e91e7;
+    background-color: #4e91e7; /* Blue background */
     color: #fff;
     border-radius: 8px;
     transition: background-color 0.3s, transform 0.2s;
@@ -119,7 +119,7 @@ button:active {
     font-weight: 600;
     cursor: pointer;
     margin-top: 20px;
-    background-color: #f77b6e;
+    background-color: #f77b6e; /* Coral color for restart button */
     color: white;
     border: none;
     border-radius: 8px;
@@ -176,6 +176,7 @@ button:active {
         width: 200px;
     }
 }
+
 #gameOverScreen {
     font-family: 'Montserrat', sans-serif;
     font-size: 18px;
@@ -200,7 +201,7 @@ button:active {
 
 .restart-button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Green color */
     color: white;
     border: none;
     border-radius: 5px;
@@ -211,3 +212,75 @@ button:active {
     background-color: #45a049;
 }
 
+.color-picker-container {
+    margin-top: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+}
+.difficulty-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center the buttons horizontally */
+    margin-bottom: 20px; /* Space between difficulty buttons and game title */
+}
+
+.difficulty-container button {
+    margin: 10px 0; /* Add vertical spacing between buttons */
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.difficulty-container button:hover {
+    background-color: #45a049;
+}
+/* Style for the game board */
+.game-board-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 320px; /* Total width for the 3x3 grid */
+    height: 320px; /* Total height */
+    margin: 0 auto;
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: #f8f8f8;
+    border: 2px solid #d0d0d0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    border-radius: 8px;
+}
+
+/* Style for the color picker container */
+.color-picker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.color-picker-container label {
+    margin-bottom: 10px;
+}
+
+.color-picker {
+    margin-top: 10px;
+    cursor: pointer;
+}
